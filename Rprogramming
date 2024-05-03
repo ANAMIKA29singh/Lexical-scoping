@@ -1,0 +1,36 @@
+Here’s how it works:
+
+makeVector is a constructor function that creates a list of functions that manage the vector and its mean.
+set assigns a new vector and resets the mean cache.
+get retrieves the current vector.
+setmean assigns a new mean to the cache.
+getmean retrieves the cached mean if it exists.
+The cachemean function:
+
+Checks if the mean is already cached using getmean.
+If the mean is not cached, it computes the mean and caches it using setmean.
+
+
+makeVector <- function(x = numeric()) {
+    m <- NULL
+    set <- function(y) {
+        x <<- y
+        m <<- NULL
+    }
+    get <- function() x
+    setmean <- function(mean) m <<- mean
+    getmean <- function() m
+    list(set = set, get = get, setmean = setmean, getmean = getmean)
+}
+
+cachemean <- function(v) {
+    m <- v$getmean()
+    if(!is.null(m)) {
+        message("Getting cached data")
+        return(m)
+    }
+    data <- v$get()
+    m <- mean(data, na.rm = TRUE)
+    v$setmean(m)
+    m
+}
